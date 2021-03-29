@@ -16,8 +16,8 @@ namespace QueryCompareTwoDirs
         {
             while (true)
             {
-                string SourcePath = @"D:\Source";
-                string TargetPath = @"D:\Target";
+                string SourcePath = @"C:\Source";
+                string TargetPath = @"C:\Target";
 
                 DirectoryInfo dirSource = new DirectoryInfo(SourcePath);
                 DirectoryInfo dirTarget = new DirectoryInfo(TargetPath);
@@ -53,7 +53,7 @@ namespace QueryCompareTwoDirs
                             bool IFSameFile = MyFileCompare.CheckInfo(ItemSource, ItemTarget);
                             if (IFSameFile)
                             {
-                                //Console.WriteLine("檔案相同");
+                                Console.WriteLine("檔案相同");
                             }
                             else
                             {
@@ -97,7 +97,10 @@ namespace QueryCompareTwoDirs
 
                 //找出source有，但是Target沒有的檔案
                 var QueryListSourceOnly = (from file in ListSource select file).Except(ListTarget, MyFileCompare);
-                Console.WriteLine("The following files are in ListSource but not in ListTarget");
+                if (QueryListSourceOnly.Count()>0)
+                {
+                    Console.WriteLine("The following files are in ListSource but not in ListTarget");
+                }
                 foreach (var F in QueryListSourceOnly)
                 {
                     Console.WriteLine(Path.GetDirectoryName(F.FullName));
@@ -153,6 +156,7 @@ namespace QueryCompareTwoDirs
             //目標檔案存在
             if (File.Exists(TargetFullName))
             {
+                Console.WriteLine("已更新" + SourceFullName + "至" + TargetFullName);
                 File.Delete(TargetFullName);
                 File.Copy(SourceFullName, TargetFullName);
             }
